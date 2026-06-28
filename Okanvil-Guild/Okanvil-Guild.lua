@@ -1,9 +1,9 @@
--- Okanvil-guild — guild tools for the RATS hub. First feature: export the guild roster as JSON.
+-- Okanvil-Guild — guild tools for the RATS hub. First feature: export the guild roster as JSON.
 -- Works standalone (own window) and embeds into Okanvil as the "Guild" tab when the host is present.
 -- Roster export matches officer/guild.html's importer:
 --   { guildName, realm, exportedAt, ranks:[{name,rankIndex}], roster:[{name,class,level,rankName,rankIndex,publicNote,officerNote}] }
 
-local ADDON = "Okanvil-guild"
+local ADDON = "Okanvil-Guild"
 
 -- minimal JSON string escaper (WoW strings are UTF-8 -> raw is valid JSON)
 local function esc(s)
@@ -110,7 +110,7 @@ local function CreateStandaloneWindow()
   f:SetScript("OnDragStart", f.StartMoving); f:SetScript("OnDragStop", f.StopMovingOrSizing)
 
   local title = f:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
-  title:SetPoint("TOP", 0, -16); title:SetText("Okanvil-guild")
+  title:SetPoint("TOP", 0, -16); title:SetText("Okanvil-Guild")
 
   local body = CreateFrame("Frame", nil, f)
   body:SetPoint("TOPLEFT", 6, -40); body:SetPoint("BOTTOMRIGHT", -6, 40)
@@ -134,13 +134,13 @@ local boot = CreateFrame("Frame")
 boot:RegisterEvent("PLAYER_LOGIN")
 boot:SetScript("OnEvent", function()
   Okanvil_Plugins = Okanvil_Plugins or {}
-  Okanvil_Plugins["Okanvil-guild"] = {
+  Okanvil_Plugins["Okanvil-Guild"] = {
     title = "Guild",
     icon  = "Interface\\Icons\\INV_Misc_GroupLooking",
     build = function(panel) Guild_BuildUI(panel) end,   -- room to add more guild tools here later
   }
   if Okanvil and Okanvil.Register then
-    Okanvil:Register("Okanvil-guild")     -- embed into the host
+    Okanvil:Register("Okanvil-Guild")     -- embed into the host
   else
     standalone = CreateStandaloneWindow() -- standalone fallback
   end

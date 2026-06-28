@@ -1,7 +1,7 @@
 # Okanvil — plan / roadmap
 
 **Goal:** an ElvUI-style **host addon** (`Okanvil`) that is *empty by itself* and hosts
-**standalone plugins**. Each plugin (Okanvil-recruit, a future Log addon, …) works **on its own**
+**standalone plugins**. Each plugin (Okanvil-Recruit, a future Log addon, …) works **on its own**
 AND, when Okanvil is installed, embeds into Okanvil's config window as a list entry. No hard coupling
 — the plugin always falls back to its own window if Okanvil isn't present.
 
@@ -33,7 +33,7 @@ Folder: `Projects\Okanvil\` → synced to `…\AddOns\Okanvil\`. **New addon →
 
 ---
 
-## ▶️ NEXT — Step 2: convert Okanvil-recruit into a plugin
+## ▶️ NEXT — Step 2: convert Okanvil-Recruit into a plugin
 
 Keep it 100% standalone; just make it Okanvil-aware.
 
@@ -43,20 +43,20 @@ Keep it 100% standalone; just make it Okanvil-aware.
 2. **Register + fallback** (run at PLAYER_LOGIN):
    ```lua
    Okanvil_Plugins = Okanvil_Plugins or {}
-   Okanvil_Plugins["Okanvil-recruit"] = {
-       title = "Okanvil-recruit",
+   Okanvil_Plugins["Okanvil-Recruit"] = {
+       title = "Okanvil-Recruit",
        icon  = "Interface\\Icons\\Ability_Warrior_BattleShout",
        build = function(panel) Recruit_BuildUI(panel) end,
        refresh = function() Recruit_RefreshUI() end,
    }
    if Okanvil and Okanvil.Register then
-       Okanvil:Register("Okanvil-recruit")     -- embed; skip own window
+       Okanvil:Register("Okanvil-Recruit")     -- embed; skip own window
    else
        RRec_CreateStandaloneWindow()      -- own window + minimap (current behaviour)
    end
    ```
 3. **`.toc`:** add `## OptionalDeps: Okanvil` (never a hard dependency).
-4. Optional: when embedded, hide the Okanvil-recruit minimap button (or make it open Okanvil).
+4. Optional: when embedded, hide the Okanvil-Recruit minimap button (or make it open Okanvil).
 5. Optional: use `Okanvil:Backdrop`/`Okanvil:NewText` when `Okanvil` exists so it inherits the theme/font.
 
 ---

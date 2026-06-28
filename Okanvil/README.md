@@ -18,7 +18,7 @@ Each works on its own, or docks into Okanvil when it's installed:
 | Plugin | What it does |
 |---|---|
 | [Okanvil-Logs](https://github.com/MrNog/Okanvil-Logs) | Combat-log control + REC timer + session tracker |
-| [Okanvil-recruit](https://github.com/MrNog/Okanvil-recruit) | Guild-recruitment advertiser (auto-reply + auto-invite) |
+| [Okanvil-Recruit](https://github.com/MrNog/Okanvil-Recruit) | Guild-recruitment advertiser (auto-reply + auto-invite) |
 | [Okanvil-IDs](https://github.com/MrNog/Okanvil-IDs) | Search spells & items by name → get the ID (for WeakAuras) |
 
 ## For plugin authors

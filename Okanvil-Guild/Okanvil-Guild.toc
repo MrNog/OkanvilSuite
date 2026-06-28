@@ -1,9 +1,9 @@
 ## Interface: 30300
-## Title: Okanvil-guild
+## Title: Okanvil-Guild
 ## Notes: Guild tools — export the roster as JSON for the RATS hub. Standalone, embeds into Okanvil.
 ## Author: Okanata
 ## Version: 1.0
 ## OptionalDeps: Okanvil
 ## SavedVariables: OkanvilGuildDB
 
-Okanvil-guild.lua
+Okanvil-Guild.lua

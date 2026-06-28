@@ -7,7 +7,7 @@
 -- Tabbed UI: Text / Settings / Filters / Whispers / Summary. Minimap button.
 -- ============================================================
 
-local ADDON = "Okanvil-recruit" -- must match the folder/.toc name (ADDON_LOADED arg)
+local ADDON = "Okanvil-Recruit" -- must match the folder/.toc name (ADDON_LOADED arg)
 local FLAT = "Interface\\ChatFrame\\ChatFrameBackground"
 
 -- ------------------------------------------------------------
