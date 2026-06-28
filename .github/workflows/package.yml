@@ -33,9 +33,12 @@ jobs:
           done
 
       - name: Publish / update the Latest release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: latest
-          name: Latest
-          files: out/*.zip
-          make_latest: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # create the rolling release once; ignore error if it already exists
+          gh release create latest --title "Latest" --latest \
+            --notes "Rolling latest builds of every Okanvil addon — download the folder(s) you want." \
+            2>/dev/null || true
+          # --clobber overwrites same-named assets (fixes "ReleaseAsset already_exists")
+          gh release upload latest out/*.zip --clobber
