@@ -8,7 +8,7 @@ Turns combat logging on/off cleanly, shows a recording indicator/timer, and trac
 
 1. Download the **.zip**, extract, and drop the **`Okanvil-Logs`** folder into `World of Warcraft\Interface\AddOns\` (remove any `-main` suffix).
 2. Restart WoW or `/reload`.
-3. Command: **`/cflog`**.
+3. Command: **`/oklog`**.
 
 Optionally install the [Okanvil](https://github.com/MrNog/Okanvil) host to manage it (and other plugins) from one window.
 

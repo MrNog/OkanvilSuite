@@ -8,7 +8,7 @@ Runs **standalone**, or docks into the [Okanvil](https://github.com/MrNog/Okanvi
 
 1. Download the **.zip**, extract, and drop the **`Okanvil-IDs`** folder into `World of Warcraft\Interface\AddOns\` (remove any `-main` suffix).
 2. Restart WoW or `/reload`.
-3. Commands: **`/cid`** or **`/idfind`**.
+3. Commands: **`/okid`** or **`/idfind`**.
 
 ---
 

@@ -29,6 +29,7 @@ local defaults = {
 	auras = {}, -- [spellID] = name  (buffs/debuffs caught on you/your target)
 	links = {}, -- [itemID] = { [spellID] = spellName }  -- your saved item<->buff library
 	snippet = false, -- copy-box shows GetItemCount(id) instead of the raw id
+	minimapAngle = 200, -- standalone minimap button position
 }
 local db
 
@@ -948,6 +949,64 @@ function OkanvilIDs.Toggle()
 	end
 end
 
+-- minimap button (standalone only — when hosted, use the Okanvil button instead)
+local function buildMinimap()
+	if OkanvilIDs.minimap then
+		return
+	end
+	local b = CreateFrame("Button", "OkanvilIDs_MinimapButton", Minimap)
+	b:SetSize(31, 31)
+	b:SetFrameStrata("MEDIUM")
+	b:SetFrameLevel(8)
+	b:RegisterForClicks("LeftButtonUp")
+	b:RegisterForDrag("LeftButton")
+
+	local overlay = b:CreateTexture(nil, "OVERLAY")
+	overlay:SetSize(53, 53)
+	overlay:SetTexture("Interface\\Minimap\\MiniMap-TrackingBorder")
+	overlay:SetPoint("TOPLEFT")
+
+	local icon = b:CreateTexture(nil, "BACKGROUND")
+	icon:SetSize(20, 20)
+	icon:SetTexture("Interface\\Icons\\INV_Misc_Spyglass_02")
+	icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+	icon:SetPoint("CENTER", 1, 1)
+
+	local function updatePos()
+		local a = math.rad(db.minimapAngle or 200)
+		b:SetPoint("CENTER", Minimap, "CENTER", 80 * math.cos(a), 80 * math.sin(a))
+	end
+	updatePos()
+
+	b:SetScript("OnDragStart", function(self)
+		self:SetScript("OnUpdate", function()
+			local mx, my = Minimap:GetCenter()
+			local px, py = GetCursorPosition()
+			local s = Minimap:GetEffectiveScale()
+			db.minimapAngle = math.deg(math.atan2(py / s - my, px / s - mx))
+			updatePos()
+		end)
+	end)
+	b:SetScript("OnDragStop", function(self)
+		self:SetScript("OnUpdate", nil)
+	end)
+
+	b:SetScript("OnClick", function()
+		OkanvilIDs.Toggle()
+	end)
+	b:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+		GameTooltip:AddLine("|cff66ddffOkanvil-IDs|r")
+		GameTooltip:AddLine("Click: open the finder", 1, 1, 1)
+		GameTooltip:AddLine("Drag: move button", 1, 1, 1)
+		GameTooltip:Show()
+	end)
+	b:SetScript("OnLeave", function()
+		GameTooltip:Hide()
+	end)
+	OkanvilIDs.minimap = b
+end
+
 -- ------------------------------------------------------------
 -- universal item harvester (hover any item anywhere -> recorded)
 -- ------------------------------------------------------------
@@ -996,9 +1055,10 @@ ev:SetScript("OnEvent", function(_, event, arg1)
 		}
 		if Okanvil and Okanvil.Register then
 			Okanvil:Register(ADDON)
-			Print("loaded -- hosted by Okanvil. |cff00ff00/cid|r opens the finder.")
+			Print("loaded -- hosted by Okanvil. |cff00ff00/okid|r opens the finder.")
 		else
-			Print("loaded (standalone). |cff00ff00/cid|r opens the finder.")
+			buildMinimap() -- only standalone gets its own button
+			Print("loaded (standalone). |cff00ff00/okid|r or the minimap button.")
 		end
 	end
 end)
@@ -1006,7 +1066,7 @@ end)
 -- ------------------------------------------------------------
 -- slash
 -- ------------------------------------------------------------
-SLASH_OkanvilIDS1 = "/cid"
+SLASH_OkanvilIDS1 = "/okid"
 SLASH_OkanvilIDS2 = "/idfind"
 SlashCmdList["OkanvilIDS"] = function(arg)
 	arg = string.lower(arg or "")

@@ -1426,7 +1426,7 @@ end
 -- Slash
 -- ============================================================
 SLASH_RECRUIT1 = "/recruit"
-SLASH_RECRUIT2 = "/rec"
+SLASH_RECRUIT2 = "/okrec"
 SlashCmdList["RECRUIT"] = function(arg)
 	arg = string.lower(arg or "")
 	if arg == "on" then

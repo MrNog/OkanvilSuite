@@ -19,6 +19,7 @@ local defaults = {
 	autoLog = false, -- legacy: silently auto-log on raid entry (used only if askOnEnter is off)
 	recLocked = false, -- lock the REC timer (click-through, no drag)
 	rec = { point = "TOP", x = 0, y = -140 },
+	minimapAngle = 205, -- standalone minimap button position
 }
 local db
 local rec, toastF, askLogF -- frames
@@ -509,6 +510,64 @@ function OkanvilLogs.Toggle()
 	end
 end
 
+-- minimap button (standalone only — when hosted, use the Okanvil button instead)
+local function buildMinimap()
+	if OkanvilLogs.minimap then
+		return
+	end
+	local b = CreateFrame("Button", "OkanvilLogs_MinimapButton", Minimap)
+	b:SetSize(31, 31)
+	b:SetFrameStrata("MEDIUM")
+	b:SetFrameLevel(8)
+	b:RegisterForClicks("LeftButtonUp")
+	b:RegisterForDrag("LeftButton")
+
+	local overlay = b:CreateTexture(nil, "OVERLAY")
+	overlay:SetSize(53, 53)
+	overlay:SetTexture("Interface\\Minimap\\MiniMap-TrackingBorder")
+	overlay:SetPoint("TOPLEFT")
+
+	local icon = b:CreateTexture(nil, "BACKGROUND")
+	icon:SetSize(20, 20)
+	icon:SetTexture("Interface\\Icons\\INV_Misc_Note_01")
+	icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+	icon:SetPoint("CENTER", 1, 1)
+
+	local function updatePos()
+		local a = math.rad(db.minimapAngle or 205)
+		b:SetPoint("CENTER", Minimap, "CENTER", 80 * math.cos(a), 80 * math.sin(a))
+	end
+	updatePos()
+
+	b:SetScript("OnDragStart", function(self)
+		self:SetScript("OnUpdate", function()
+			local mx, my = Minimap:GetCenter()
+			local px, py = GetCursorPosition()
+			local s = Minimap:GetEffectiveScale()
+			db.minimapAngle = math.deg(math.atan2(py / s - my, px / s - mx))
+			updatePos()
+		end)
+	end)
+	b:SetScript("OnDragStop", function(self)
+		self:SetScript("OnUpdate", nil)
+	end)
+
+	b:SetScript("OnClick", function()
+		OkanvilLogs.Toggle()
+	end)
+	b:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+		GameTooltip:AddLine("|cff66ddffOkanvil-Logs|r")
+		GameTooltip:AddLine("Click: open", 1, 1, 1)
+		GameTooltip:AddLine("Drag: move button", 1, 1, 1)
+		GameTooltip:Show()
+	end)
+	b:SetScript("OnLeave", function()
+		GameTooltip:Hide()
+	end)
+	OkanvilLogs.minimap = b
+end
+
 -- ------------------------------------------------------------
 -- events / boot
 -- ------------------------------------------------------------
@@ -562,9 +621,10 @@ ev:SetScript("OnEvent", function(_, event, arg1, ...)
 		}
 		if Okanvil and Okanvil.Register then
 			Okanvil:Register(ADDON)
-			Print("loaded -- hosted by Okanvil. |cff00ff00/cflog|r toggles logging.")
+			Print("loaded -- hosted by Okanvil. |cff00ff00/oklog|r toggles logging.")
 		else
-			Print("loaded (standalone). |cff00ff00/cflog|r opens, |cff00ff00/cflog on|r/|cff00ff00off|r logs.")
+			buildMinimap() -- only standalone gets its own button
+			Print("loaded (standalone). |cff00ff00/oklog|r or the minimap button.")
 		end
 	elseif event == "PLAYER_ENTERING_WORLD" then
 		if not db then
@@ -614,7 +674,7 @@ end)
 -- ------------------------------------------------------------
 -- slash
 -- ------------------------------------------------------------
-SLASH_OkanvilLOGS1 = "/cflog"
+SLASH_OkanvilLOGS1 = "/oklog"
 SlashCmdList["OkanvilLOGS"] = function(arg)
 	arg = string.lower(arg or "")
 	if arg == "on" then
