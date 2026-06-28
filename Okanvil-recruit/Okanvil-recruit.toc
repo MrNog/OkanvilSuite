@@ -1,0 +1,9 @@
+## Interface: 30300
+## Title: Okanvil-recruit
+## Notes: Generic guild-recruitment advertiser (Okanvil plugin) with auto-reply and auto-invite. Guild name configurable.
+## Author: Okanata
+## Version: 1.0
+## SavedVariables: RecruitDB
+
+RecruitLogic.lua
+Recruit.lua

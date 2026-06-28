@@ -1,0 +1,9 @@
+## Interface: 30300
+## Title: Okanvil-IDs
+## Notes: Search spells & items by NAME -> get the ID (for WeakAuras). Standalone, or a Okanvil plugin.
+## Author: Okanata
+## Version: 1.0
+## OptionalDeps: Okanvil
+## SavedVariables: OkanvilIDsDB
+
+Okanvil-IDs.lua

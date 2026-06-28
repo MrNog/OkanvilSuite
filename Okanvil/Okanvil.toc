@@ -1,0 +1,13 @@
+## Interface: 30300
+## Title: Okanvil
+## Notes: Host shell for standalone addons (ElvUI-style plugins). The void in your stack trace.
+## Author: Okanata
+## Version: 1.0
+## SavedVariables: Okanvil_DB
+
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+Libs\LibSharedMedia-3.0\LibSharedMedia-3.0.lua
+
+Core.lua
+UI.lua

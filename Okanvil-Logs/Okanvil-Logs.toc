@@ -1,0 +1,9 @@
+## Interface: 30300
+## Title: Okanvil-Logs
+## Notes: Combat-log control + REC timer + session tracker. Standalone, or a Okanvil plugin.
+## Author: Okanata
+## Version: 1.0
+## OptionalDeps: Okanvil
+## SavedVariablesPerCharacter: OkanvilLogsDB
+
+Okanvil-Logs.lua

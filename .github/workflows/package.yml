@@ -1,0 +1,41 @@
+name: Package addons
+
+# Monorepo for the Okanvil suite. On every push to main, build one clean
+# <Addon>.zip per top-level addon folder (each zip contains a folder named exactly
+# after the addon, so it's install-ready) and publish them all to the rolling
+# "Latest" release — users download just the folders they want.
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build per-addon zips (only folders that contain a .toc)
+        run: |
+          mkdir -p out
+          for d in */ ; do
+            name="${d%/}"
+            if ls "$name"/*.toc >/dev/null 2>&1; then
+              mkdir -p "staging/$name"
+              cp -r "$name/." "staging/$name/"
+              ( cd staging && zip -r "../out/$name.zip" "$name" )
+              echo "packaged $name"
+            fi
+          done
+
+      - name: Publish / update the Latest release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest
+          files: out/*.zip
+          make_latest: true
